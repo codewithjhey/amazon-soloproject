@@ -1,1 +1,22 @@
-[{"name":"13 Pro Max","description":"A lovely compact phone","brand":"iphone","imageUrl":"https://m.media-amazon.com/images/I/611ovP2GkrL._AC_SL1500_.jpg","price":735,"category":"smartphones","createdAt":"2022-12-23T12:11:07.727Z","_id":"93q9lq96lc0h1pvz"}]
+[
+  {
+    "name": "13 Pro Max",
+    "description": "A lovely compact phone",
+    "brand": "iphone",
+    "imageUrl": "https://m.media-amazon.com/images/I/611ovP2GkrL._AC_SL1500_.jpg",
+    "price": 735,
+    "category": "smartphones",
+    "createdAt": "2022-12-23T12:11:07.727Z",
+    "_id": "93q9lq96lc0h1pvz"
+  },
+  {
+    "name": "Apple iPhone 14 Pro (1 TB) - Gold",
+    "description": "iOS 16 offers even more ways to personalize, communicate, and share",
+    "brand": "iphone",
+    "imageUrl": "https://m.media-amazon.com/images/I/611ovP2GkrL._AC_SL1500_.jpg",
+    "price": 1649,
+    "category": "smartphones",
+    "createdAt": "2022-12-23T15:26:43.903Z",
+    "_id": "93q9lstplc0o19kw"
+  }
+]

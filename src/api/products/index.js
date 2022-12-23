@@ -46,30 +46,31 @@ const getProductReviews = async (id) => {
 
 productsRouter.get("/", async (req, res, next) => {
   try {
-    const productsArray = await getProducts()
-    if (req.query && req.query.category) {
-      const filteredProducts = productsArray.filter(
-        (product) => product.category === req.query.category
-      )
-      res.send(filteredProducts)
-    } else {
+    const productsArray = await getProductsReviews()
+    const query = req.query.category
+
+    if (!query) {
       res.send(productsArray)
+    } else {
+      const queriedProducts = productsArray.filter(
+        (product) => product.category === query
+      )
+      res.send(queriedProducts)
     }
   } catch (error) {
     next(error)
   }
 })
 
-productsRouter.get("/:productId", async (req, res, next) => {
+productsRouter.get("/:id", async (req, res, next) => {
   try {
-    const products = await getProducts()
-    const product = products.find(
-      (product) => product._id === req.params.productId
-    )
-    if (product) {
-      res.send(product)
+    const productID = req.params.id
+    const queriedProduct = await getProductWithReviews(productID)
+
+    if (queriedProduct) {
+      res.send(queriedProduct)
     } else {
-      next(NotFound(`Product with the id ${req.params.productId} not found`))
+      next(NotFound(`Product with the id ${productID} not found`))
     }
   } catch (error) {
     next(error)
@@ -165,6 +166,97 @@ productsRouter.post(
         res.send(`Review with id ${newReview._id} created`)
       } else {
         next(NotFound(`Product with id ${req.body.productId} was not found`))
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
+
+productsRouter.get("/:productId/reviews/:reviewId", async (req, res, next) => {
+  try {
+    const productID = req.params.productId
+    const reviewID = req.params.reviewId
+    const reviewsArray = await getReviews()
+    const wantedReview = reviewsArray
+      .filter((review) => review.productId === productID)
+      .find((review) => review._id === reviewID)
+    if (wantedReview) {
+      res.send(wantedReview)
+    } else {
+      next(NotFound(`Request could not be performed due to incorrect entries`))
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+productsRouter.put(
+  "/:productId/reviews/:reviewId",
+  checksReviewSchema,
+  triggerReviewBadRequest,
+  async (req, res, next) => {
+    try {
+      const productID = req.params.productId
+      const reviewID = req.params.reviewId
+      const reviewsArray = await getReviews()
+      const indexOfWantedReview = reviewsArray
+        .filter((review) => review.productId === productID)
+        .findIndex((review) => review._id === reviewID)
+      if (indexOfWantedReview !== -1) {
+        const wantedReview = reviewsArray[indexOfWantedReview]
+        const updatedWantedReview = {
+          ...wantedReview,
+          ...req.body,
+          updatedAt: new Date()
+        }
+        reviewsArray[indexOfWantedReview] = updatedWantedReview
+        await writeReviews(reviewsArray)
+        res.send(updatedWantedReview)
+      } else {
+        next(
+          NotFound(`Request could not be performed due to incorrect entries`)
+        )
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+)
+
+productsRouter.get("/:id/reviews", async (req, res, next) => {
+  try {
+    const productID = req.params.id
+    const reviewsArray = await getReviews()
+    const wantedReviews = reviewsArray.filter(
+      (review) => review.productId === productID
+    )
+    res.send(wantedReviews)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+productsRouter.delete(
+  "/:productId/reviews/:reviewId",
+  async function (req, res, next) {
+    try {
+      const productID = req.params.productId
+      const reviewID = req.params.reviewId
+      const reviewsArray = await getReviews()
+      const filteredReviewsArray = reviewsArray
+        .filter((review) => review.productId === productID)
+        .filter((review) => review._id !== reviewID)
+      if (
+        filteredReviewsArray.length !==
+        reviewsArray.filter((review) => review.productId === productID).length
+      ) {
+        await writeReviews(filteredReviewsArray)
+        res.status(204).send()
+      } else {
+        next(
+          NotFound(`Request could not be performed due to incorrect entries`)
+        )
       }
     } catch (error) {
       console.log(error)

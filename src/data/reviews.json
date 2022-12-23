@@ -1,1 +1,16 @@
-[{"comment":"A great phone but too expensive","rate":3,"productId":"93q9lq96lc0h1pvo","_id":"93q9ls7mlc0li8km","createdAt":"2022-12-23T14:15:56.901Z"}]
+[
+  {
+    "comment": "A great phone but too expensive",
+    "rate": 3,
+    "productId": "93q9lq96lc0h1pvo",
+    "_id": "93q9ls7mlc0li8km",
+    "createdAt": "2022-12-23T14:15:56.901Z"
+  },
+  {
+    "comment": "Camera isn't fantastic, it's a incremental upgrade. It's ok",
+    "rate": 5,
+    "productId": "93q9lstplc0o19kw",
+    "_id": "93q9lstplc0o8ik8",
+    "createdAt": "2022-12-23T15:32:22.136Z"
+  }
+]

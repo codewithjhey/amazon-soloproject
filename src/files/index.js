@@ -15,7 +15,7 @@ const { NotFound } = httpErrors
 
 filesRouter.post(
   "/:id/upload",
-  multer().single("productImg"),
+  multer().single("productImgs"),
   async (req, res, next) => {
     try {
       const fileExtensionType = extname(req.file.originalname)
