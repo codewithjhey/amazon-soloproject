@@ -21,6 +21,7 @@ const { NotFound } = httpErrors
 const getProductsReviews = async () => {
   const productsArray = await getProducts()
   const reviews = await getReviews()
+
   const productsReviews = productsArray.map((product) => {
     const wantedReview = reviews.filter(
       (review) => review.productId === product.id
@@ -35,8 +36,10 @@ const getProductsReviews = async () => {
 
 const getProductReviews = async (id) => {
   const productsArray = await getProducts()
+
   const queriedProduct = productsArray.find((product) => product.id === id)
   const reviews = await getReviews()
+  console.log(reviews)
   const wantedReview = reviews.filter((review) => review.productId === id)
   if (wantedReview) {
     queriedProduct.reviews = wantedReview
@@ -65,7 +68,7 @@ productsRouter.get("/", async (req, res, next) => {
 productsRouter.get("/:id", async (req, res, next) => {
   try {
     const productID = req.params.id
-    const queriedProduct = await getProductWithReviews(productID)
+    const queriedProduct = await getProductReviews(productID)
 
     if (queriedProduct) {
       res.send(queriedProduct)
